@@ -1,0 +1,22 @@
+  AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  InsecureS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: coderabbit-s3-demo  
+      AccessControl: PublicRead  
+      VersioningConfiguration:
+        Status: Enabled 
+      CorsConfiguration:
+        CorsRules:
+          - AllowedOrigins:
+              - "*"
+            AllowedMethods:
+              - GET
+              - POST
+            AllowedHeaders:
+              - "*"
+            MaxAge: 3000
+      LoggingConfiguration:
+        Enabled: false
+      DeletionPolicy: Retain
