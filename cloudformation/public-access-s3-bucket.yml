@@ -1,0 +1,13 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Resources:
+  PublicS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: coderabbit-public-bucket
+      AccessControl: PublicRead  # Misconfiguration: Public read access to the bucket
+      VersioningConfiguration:
+        Status: Enabled
+      Tags:
+        - Key: "Environment"
+          Value: "Development"
