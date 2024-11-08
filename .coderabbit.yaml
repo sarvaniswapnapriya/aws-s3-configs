@@ -34,6 +34,7 @@ reviews:
     - "terraform/*.tf"
     - "terraform/modules/**/*.tf"
     - "sdk/*.js"
+    - "sdk-scripts/*.js"
     - "iac/**/*.yaml"
   path_instructions:
     - path: "terraform/*"
@@ -43,6 +44,11 @@ reviews:
         - Encryption configuration
         - Public access restrictions
         - Resource tagging compliance
+        - S3 bucket versioning
+        - S3 bucket encryption
+        - S3 public access block settings
+        - AWS provider authentication method
+
     - path: "sdk/*"
       instructions: |
         Review SDK scripts for:
@@ -62,7 +68,8 @@ reviews:
   abort_on_close: true
 
 exclude:
-  - '**/js/**'
-  - '**/html/**'
+  - '**/js/vendor/**'
+  - '**/js/lib/**'
+  - '**/html/templates/**'
 chat:
   auto_reply: true
