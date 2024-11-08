@@ -1,0 +1,35 @@
+
+language: en-US
+reviews:
+  profile: chill
+  high_level_summary: true
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+  tools:
+    checkov:
+      enabled: true
+    eslint:
+      enabled: true
+    gitleaks:
+      enabled: true
+  path_filters:
+    - "**/terraform/**"
+    - "**/sdk/**"
+  path_instructions:
+    - path: "terraform/*"
+      instructions: |
+        Review Terraform code for security best practices.
+    - path: "sdk/*"
+      instructions: |
+        Review the Node.js SDK script for security.
+  path_instructions_defaults: "Ensure code follows best practices and checks for security misconfigurations."
+  changed_files_summary: true
+  commit_status: true
+  abort_on_close: true
+
+exclude:
+  - '**/js/**'
+  - '**/html/**'
+chat:
+  auto_reply: true

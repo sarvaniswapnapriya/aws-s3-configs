@@ -1,7 +1,0 @@
-exclude:
-  - '**/js/**'  # Exclude all JS files
-  - '**/html/**'  # Exclude all HTML files
-
-prompts:
-  - "S3 bucket configuration examples."
-  - "Demonstrate how AWS S3 configurations can be made."
