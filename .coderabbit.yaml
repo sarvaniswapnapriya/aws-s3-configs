@@ -7,22 +7,55 @@ reviews:
     enabled: true
     auto_incremental_review: true
   tools:
+    # checkov:
+    #   enabled: true
+    # eslint:
+    #   enabled: true
+    # gitleaks:
+    #   enabled: true
+
     checkov:
       enabled: true
+      categories:
+        - "GENERAL_SECURITY"
+        - "ENCRYPTION"
+        - "IAM"
     eslint:
       enabled: true
+      rules:
+        security: error
     gitleaks:
       enabled: true
+      allow_list: []
+    tfsec:
+      enabled: true
+
   path_filters:
-    - "**/terraform/**"
-    - "**/sdk/**"
+    - "terraform/*.tf"
+    - "terraform/modules/**/*.tf"
+    - "sdk/*.js"
+    - "iac/**/*.yaml"
   path_instructions:
     - path: "terraform/*"
       instructions: |
-        Review Terraform code for security best practices.
+        Review Terraform code for:
+        - IAM least privilege principles
+        - Encryption configuration
+        - Public access restrictions
+        - Resource tagging compliance
     - path: "sdk/*"
       instructions: |
-        Review the Node.js SDK script for security.
+        Review SDK scripts for:
+        - AWS credentials handling
+        - Error handling
+        - Input validation
+        - Secure configuration practices
+    - path: "iac/*"
+      instructions: |
+        Review infrastructure configurations for:
+        - Security group rules
+        - Network access controls
+        - Compliance with security standards
   path_instructions_defaults: "Ensure code follows best practices and checks for security misconfigurations."
   changed_files_summary: true
   commit_status: true
