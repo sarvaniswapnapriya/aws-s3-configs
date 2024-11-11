@@ -1,0 +1,81 @@
+language: en-US
+reviews:
+  profile: chill
+  high_level_summary: true
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+  tools:
+    checkov:
+      enabled: true
+      categories:
+        - "GENERAL_SECURITY"
+        - "ENCRYPTION"
+        - "IAM"
+        - "S3" # Adding check for common S3 mistakes
+      # Enabling categories to catch common S3 misconfigurations
+    eslint:
+      enabled: true
+      rules:
+        security: error
+    gitleaks:
+      enabled: true
+      allow_list: []
+    tfsec:
+      enabled: true
+      # Added S3 specific checks to tfsec categories
+      categories:
+        - "aws"
+        - "s3"
+        - "iam"
+        - "encryption"
+
+  path_filters:
+    - "terraform/*.tf"
+    - "terraform/modules/**/*.tf"
+    - "sdk/*.js"
+    - "sdk-scripts/*.js"
+    - "iac/**/*.yaml"
+  path_instructions:
+    - path: "terraform/*"
+      instructions: |
+        Review Terraform code for:
+        - IAM least privilege principles
+        - Encryption configuration
+        - Public access restrictions (Check for `public-read` and bucket policies)
+        - Resource tagging compliance
+        - S3 bucket versioning (ensure versioning is enabled)
+        - S3 bucket encryption (ensure default encryption is enabled)
+        - S3 public access block settings (ensure blocks are set)
+        - AWS provider authentication method
+        - Review for overly permissive bucket policies and misconfigured CORS settings
+
+    - path: "sdk/*"
+      instructions: |
+        Review SDK scripts for:
+        - AWS credentials handling (Ensure no hardcoding or use of insecure methods)
+        - Error handling (Make sure errors are handled correctly for S3 uploads)
+        - Input validation (Check that files being uploaded are validated)
+        - Secure configuration practices (Check for use of presigned URLs for secure uploads)
+    - path: "iac/*"
+      instructions: |
+        Review infrastructure configurations for:
+        - Security group rules
+        - Network access controls
+        - Compliance with security standards (Ensure encryption is enabled, S3 access controls are strict)
+        - Ensure that logs are enabled and versioning is configured in Terraform for S3 buckets
+
+  path_instructions_defaults: "Ensure code follows best practices and checks for security misconfigurations."
+  changed_files_summary: true
+  commit_status: true
+  abort_on_close: true
+
+exclude:
+  - '**/js/vendor/**'
+  - '**/js/lib/**'
+  - '**/html/templates/**'
+  - '**/terraform/legacy/**' # Adding legacy to exclude to avoid old resources triggering errors
+  - '**/sdk/sensitive/**' # Excluding sensitive folders in SDK
+  - 'frontend/index.html' # Explicitly exclude index.html from the checks
+chat:
+  auto_reply: true
